@@ -68,9 +68,8 @@ public class DrawTeamsCommands
         var usersArray = users.ToArray();
         SavedUsers = [.. usersArray];
 
-        var result = new DiscordInteractionResponseBuilder();
-        result.WithContent(GenerateFinalResponse(usersArray));
-        await interactivity.Result.Result.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource, result);
+        await interactivity.Result.Result.Interaction.CreateResponseAsync(DiscordInteractionResponseType.UpdateMessage);
+        await context.EditResponseAsync(GenerateFinalResponse(usersArray));
 
         cts.Cancel();
         await Task.WhenAll(interactivities);
