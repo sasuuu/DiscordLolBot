@@ -52,13 +52,12 @@ public class TeamsService(IChampionsLolClient championsClient) : ITeamsService
                 if (availableChampions.Count >= 2)
                 {
                     var first = availableChampions[random.Next(availableChampions.Count)];
-                    value.Remove(first);
+                    availableChampions.Remove(first);
 
                     selectedChampions.Add(first.Name);
                     firstTeam.Add(first.Name);
 
                     var second = availableChampions[random.Next(availableChampions.Count)];
-                    value.Remove(second);
 
                     selectedChampions.Add(second.Name);
                     secondTeam.Add(second.Name);
