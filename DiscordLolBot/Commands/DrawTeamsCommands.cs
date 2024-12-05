@@ -19,11 +19,15 @@ public class DrawTeamsCommands
     public static async ValueTask DrawTeamsAsync(CommandContext context)
     {
         var users = new List<string>();
-        await context.DeferResponseAsync();
-
+        
         var builder = GenerateInteractiveResponseBuilder(context, GenerateInteractiveResponseContent([]));
+        await context.RespondAsync(builder);
 
-        var message = await context.EditResponseAsync(builder);
+        var message = await context.GetResponseAsync();
+        if (message == null)
+        {
+            return;
+        }
 
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         var interactivities = new[]
@@ -68,8 +72,10 @@ public class DrawTeamsCommands
         var usersArray = users.ToArray();
         SavedUsers = [.. usersArray];
 
-        await interactivity.Result.Result.Interaction.CreateResponseAsync(DiscordInteractionResponseType.UpdateMessage);
-        await context.EditResponseAsync(GenerateFinalResponse(usersArray));
+        var finalResponseBuilder = new DiscordInteractionResponseBuilder();
+        finalResponseBuilder.WithContent(GenerateFinalResponse(usersArray));
+        await interactivity.Result.Result.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource, finalResponseBuilder);
+        await context.EditResponseAsync("Draw is finished");
 
         cts.Cancel();
         await Task.WhenAll(interactivities);
