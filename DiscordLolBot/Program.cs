@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Commands;
+using DSharpPlus.Commands.Processors.SlashCommands;
 using DSharpPlus.Commands.Processors.TextCommands;
 using DSharpPlus.Commands.Processors.TextCommands.Parsing;
 using DSharpPlus.Entities;
@@ -16,7 +17,7 @@ if (discordToken == null)
     throw new ArgumentNullException(nameof(discordToken));
 }
 
-var intents = DiscordIntents.All;
+var intents = TextCommandProcessor.RequiredIntents | SlashCommandProcessor.RequiredIntents | DiscordIntents.GuildVoiceStates | DiscordIntents.MessageContents;
 var clientBuilder = DiscordClientBuilder.CreateDefault(discordToken, intents);
 
 clientBuilder.ConfigureServices(services =>
