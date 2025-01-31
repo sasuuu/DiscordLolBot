@@ -6,12 +6,17 @@ using DSharpPlus.Commands.Processors.TextCommands.Parsing;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PrzyjaznyBot.Clients;
 using PrzyjaznyBot.Commands;
 using PrzyjaznyBot.Services;
 
-var discordToken = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+var configurationBuilder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var configuration = configurationBuilder.Build();
+var discordToken = configuration.GetValue("DiscordToken", default(string));
 if (discordToken == null)
 {
     throw new ArgumentNullException(nameof(discordToken));
