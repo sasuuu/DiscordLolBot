@@ -36,14 +36,6 @@ jobs:
           flavor: |
             latest=true
 
-      - name: Create App configuration from secret
-        uses: mobiledevops/secret-to-file-action@v1
-        with:
-          base64-encoded-secret: ${{ secrets.APP_CONFIGURATION }}
-          filename: "appsettings.json"
-          is-executable: false
-          working-directory: "./DiscordLolBot"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
