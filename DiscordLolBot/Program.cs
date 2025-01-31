@@ -13,9 +13,10 @@ using PrzyjaznyBot.Commands;
 using PrzyjaznyBot.Services;
 
 var configurationBuilder = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    .AddEnvironmentVariables();
+
 var configuration = configurationBuilder.Build();
+
 var discordToken = configuration.GetValue("DiscordToken", default(string));
 if (discordToken == null)
 {
